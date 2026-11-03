@@ -29,7 +29,7 @@ wo Temperaturunterschiede etwas über den Zustand verraten, können wir messen u
 
 ## Messtechnik
 
-Wir arbeiten mit hochauflösenden Wärmebildkameras von FLIR, darunter eine FLIR T840.
+Wir arbeiten mit hochauflösenden Wärmebildkameras von FLIR (FLIR T840 und FLIR T540).
 Wechselobjektive erlauben Aufnahmen aus großer Entfernung ebenso wie Detailaufnahmen kleiner
 Bauteile. Ausgewertet wird mit Herstellersoftware; Sie erhalten einen verständlichen Bericht
 mit Bildern und Empfehlungen.

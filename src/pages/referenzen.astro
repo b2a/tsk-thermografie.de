@@ -3,7 +3,7 @@ import Basis from '../layouts/Basis.astro';
 import Seitenkopf from '../components/Seitenkopf.astro';
 import AnfrageBand from '../components/AnfrageBand.astro';
 import Bild from '../components/Bild.astro';
-import { BEISPIELE, BEFUNDE } from '../data/beispiele';
+import { BEISPIELE, BEFUNDE, THERMOGRAMME } from '../data/beispiele';
 import { bildUrl } from '../lib/bilder';
 ---
 <Basis
@@ -27,6 +27,25 @@ import { bildUrl } from '../lib/bilder';
       ))}
     </div>
   </section>
+  <section class="abschnitt" aria-labelledby="galerie-titel">
+    <div class="huelle">
+      <div class="abschnitt-kopf">
+        <h2 id="galerie-titel">Weitere Thermogramme aus unseren Untersuchungen</h2>
+        <p>Alle Aufnahmen stammen aus Niederspannungsanlagen, die wir 2025 und 2026 untersucht haben. Die Zahl oben links im Bild ist die höchste gemessene Temperatur im Bildausschnitt.</p>
+      </div>
+      <ul class="galerie">
+        {THERMOGRAMME.map((t) => (
+          <li>
+            <figure>
+              <a href={t.bild}><Bild src={t.bild} alt={t.alt} sizes="(min-width: 64rem) 22rem, (min-width: 36rem) 45vw, 100vw" /></a>
+              <figcaption><strong>{t.titel}</strong> <span>max. {t.max}</span></figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <section class="abschnitt abschnitt-grau" aria-labelledby="befunde-titel">
     <div class="huelle">
       <div class="abschnitt-kopf">
@@ -44,6 +63,14 @@ import { bildUrl } from '../lib/bilder';
   .beispiel figcaption { max-width: var(--text-breite); margin-top: var(--s-4); }
   .beispiel h2 { font-size: 1.5rem; margin-bottom: var(--s-1); }
   .ort { color: var(--gedaempft); font-size: 1rem; }
+  .galerie { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-6) var(--s-5); grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }
+  .galerie figure { margin: 0; }
+  .galerie a { display: block; }
+  .galerie :global(img) { border-radius: var(--radius); width: 100%; }
+  .galerie a:hover :global(img) { outline: 3px solid var(--glut); outline-offset: 2px; }
+  .galerie figcaption { margin-top: var(--s-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); font-size: 1rem; }
+  .galerie strong { color: var(--tinte); }
+  .galerie span { color: var(--glut-dunkel); font-weight: 600; white-space: nowrap; }
   .befunde { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-3) var(--s-6); grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
   .befunde li { padding-left: var(--s-5); position: relative; }
   .befunde li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--glut); }

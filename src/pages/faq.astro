@@ -3,6 +3,7 @@ import Basis from '../layouts/Basis.astro';
 import Seitenkopf from '../components/Seitenkopf.astro';
 import AnfrageBand from '../components/AnfrageBand.astro';
 import { FRAGEN } from '../data/fragen';
+import { BEGRIFFE } from '../data/begriffe';
 import { fragenSchema } from '../lib/schema';
 import { VDS_VERZEICHNIS } from '../lib/firma';
 ---
@@ -10,7 +11,11 @@ import { VDS_VERZEICHNIS } from '../lib/firma';
   titel="Rechtssicherheit bei der Elektrothermografie – Fragen und Antworten"
   beschreibung="Wer darf Elektrothermografie nach VdS 2860 durchführen, welchen Bericht braucht der Versicherer, wie oft prüfen? Antworten für Betreiber und VEFK."
   brotkrumen={[]}
-  jsonld={[fragenSchema(FRAGEN)]}
+  jsonld={[fragenSchema(FRAGEN), {
+    '@context': 'https://schema.org', '@type': 'DefinedTermSet', name: 'Fachbegriffe der Elektrothermografie',
+    url: new URL('/faq/#begriffe', Astro.site).href,
+    hasDefinedTerm: BEGRIFFE.map(({ b, d }) => ({ '@type': 'DefinedTerm', name: b, description: d })),
+  }]}
 >
   <Seitenkopf
     titel="Rechtssicherheit bei der Elektrothermografie"
@@ -35,6 +40,12 @@ import { VDS_VERZEICHNIS } from '../lib/firma';
           </details>
         ))}
       </div>
+      <section class="begriffe" id="begriffe" aria-labelledby="begriffe-titel">
+        <h2 id="begriffe-titel">Fachbegriffe kurz erklärt</h2>
+        <dl>
+          {BEGRIFFE.map(({ b, d }) => <div><dt>{b}</dt><dd>{d}</dd></div>)}
+        </dl>
+      </section>
       <p class="weiter">Weitere Fragen? <a href="/kontakt/">Schreiben Sie uns</a> – wir antworten gern.</p>
     </div>
   </section>
@@ -45,5 +56,11 @@ import { VDS_VERZEICHNIS } from '../lib/firma';
   .kurz h2 { font-size: 1.35rem; }
   .kurz p:last-child { margin: 0; }
   .frage { display: inline; font: inherit; color: inherit; margin: 0; }
+  .begriffe { margin-top: var(--s-8); max-width: 52rem; }
+  .begriffe dl { margin: 0; border-top: 2px solid var(--tinte); }
+  .begriffe div { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-4); border-bottom: 1px solid var(--linie); }
+  @media (min-width: 44rem) { .begriffe div { grid-template-columns: 15rem 1fr; } }
+  .begriffe dt { font-weight: 600; color: var(--tinte); }
+  .begriffe dd { margin: 0; color: var(--gedaempft); }
   .weiter { margin-top: var(--s-6); }
 </style>

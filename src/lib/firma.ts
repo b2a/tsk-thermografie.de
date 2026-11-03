@@ -46,3 +46,5 @@ export const NAVIGATION = [
 export const REGION = ['Lohra', 'Marburg', 'Gießen', 'Wetzlar', 'Biedenkopf', 'Dillenburg', 'Frankenberg (Eder)', 'Limburg', 'Friedberg', 'Mittelhessen'];
 
 export const VDS_VERZEICHNIS = 'https://vds.de/zertifikate/verzeichnis/V2861';
+
+export const KAMERAS = ['FLIR T840', 'FLIR T540'] as const;

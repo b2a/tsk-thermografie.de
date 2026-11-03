@@ -22,3 +22,6 @@ eingaenge/
 .claude/settings.local.json
 .vscode/
 .idea/
+
+# Rohdaten vom Kunden (enthält Zugangsdaten)
+_DATA/

@@ -54,6 +54,22 @@ for (const rel of [...genutzt].sort()) {
   index[rel] = { b, h, v: varianten };
 }
 
+// Eigene Bilder in public/bilder/ (Varianten heißen name-<breite>.jpg)
+const LOKAL = path.join(ROOT, 'public', 'bilder');
+const lokal = {};
+for (const rel of fs.existsSync(LOKAL) ? fs.readdirSync(LOKAL, { recursive: true }) : []) {
+  const datei = path.join(LOKAL, rel);
+  if (!fs.statSync(datei).isFile() || !/\.(jpe?g|png|webp)$/i.test(rel)) continue;
+  const { width: b, height: h } = await sharp(datei).metadata();
+  const m = rel.match(/^(.*)-(\d+)(\.\w+)$/);
+  const schluessel = m ? m[1] + m[3] : rel;
+  const e = (lokal[schluessel] ??= { b: 0, h: 0, v: [] });
+  if (b > e.b) { if (e.b) e.v.push([e.b, e.datei]); Object.assign(e, { b, h, datei: rel }); } else e.v.push([b, rel]);
+}
+for (const e of Object.values(lokal)) e.v.sort((x, y) => x[0] - y[0]);
+
 fs.writeFileSync(OUT, JSON.stringify(index, null, 1));
+fs.writeFileSync(path.join(ROOT, 'src', 'data', 'bilder-lokal.json'), JSON.stringify(lokal, null, 1));
+console.log(`${Object.keys(lokal).length} eigene Bilder in public/bilder/.`);
 console.log(`${Object.keys(index).length} Bilder im Index.`);
 if (fehlend.length) { console.log(`Nicht gefunden:\n  ${fehlend.join('\n  ')}`); process.exitCode = 1; }

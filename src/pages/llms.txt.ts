@@ -3,6 +3,8 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { FIRMA, TEAM, VDS_VERZEICHNIS } from '../lib/firma';
 import { FRAGEN } from '../data/fragen';
+import { BEGRIFFE } from '../data/begriffe';
+import { KAMERAS } from '../lib/firma';
 
 export const GET: APIRoute = async ({ site }) => {
   const url = (p: string) => new URL(p, site).href;
@@ -35,6 +37,14 @@ ${leistungen.map((l) => `- [${l.data.titel}](${url(`/leistungen/${l.id}/`)}): ${
 ## Häufige Fragen
 
 ${FRAGEN.map((q) => `### ${q.f}\n${q.a}`).join('\n\n')}
+
+## Fachbegriffe
+
+${BEGRIFFE.map(({ b, d }) => `- **${b}:** ${d}`).join('\n')}
+
+## Messtechnik
+
+Wärmebildkameras ${KAMERAS.join(' und ')}. Untersuchungsbericht nach VdS 2860 mit Befundklassen ok, TA, GTA (gefährlich, mit Behebungsfrist), kb und nTA.
 
 ## Optional
 

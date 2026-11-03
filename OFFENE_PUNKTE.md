@@ -29,6 +29,19 @@ Abhaken mit `[x]`. Ideen für später stehen in [FUTURE_IDEAS.md](FUTURE_IDEAS.m
 
 ## Inhalte prüfen
 
+- [ ] **Schlagworte, die ich noch nicht eingebaut habe** – nur eintragen, wenn sie zutreffen:
+      **DIN EN ISO 9712 / „TT Stufe 2“** (Zertifizierung als Thermografie-Prüfer Stufe 2 – liegt ein Zertifikat vor? Für wen?),
+      **VATH** (Mitglied im Verband für angewandte Thermografie?), **Mittelspannung / Hochspannung**
+      (untersucht ihr auch Trafostationen und Mittelspannungsanlagen?), **VDE** (z. B. Mitgliedschaft oder nur Normen?).
+- [ ] **Bildunterschriften der Thermogramme** in `src/data/beispiele.ts` fachlich prüfen (Bauteil richtig benannt?).
+- [ ] **Anlagenarten** auf der Seite Elektrothermografie prüfen: „Hauptverteilungen, Unterverteilungen, Schaltschränke,
+      Steuerungen, Kompensationsanlagen und Stromschienensysteme“ – stimmt das so?
+- [ ] **Aus „Offenes.docx“:** Fotos von Frank und Nino, Werdegang beider, „Firma besteht seit …“ – dann ergänze ich
+      Über uns. Design „angelehnt an die Visitenkarten“: bitte eine Visitenkarte als Bild schicken.
+- [ ] **Nicht verwendete Bilder:** Viele Bilder in `_DATA/…/Bilder` und drei in `IR Bilder` (PV-Module, Trafo von InfraTec,
+      `csm_SWI…`) stammen offenbar von fremden Websites. Ohne Nutzungsrecht drohen Abmahnungen – deshalb nicht eingebaut.
+      Ebenso VdS-Logo (Nutzung nur nach VdS-Regeln) und FLIR-Logo (Markenzeichen).
+
 - [ ] **Alle Texte gegenlesen**, besonders die neu formulierten Leistungsseiten (angelehnt an den Emetron-Text,
       eigenständig umgeschrieben) und die Aussagen zu ArbSchG, BetrSichV, DGUV V3, SK 3602.
 - [ ] **„Wir melden uns innerhalb von zwei Werktagen“** (Kontakt, Danke-Seite) – ist das realistisch?

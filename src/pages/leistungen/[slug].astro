@@ -4,6 +4,7 @@ import Basis from '../../layouts/Basis.astro';
 import Seitenkopf from '../../components/Seitenkopf.astro';
 import AnfrageBand from '../../components/AnfrageBand.astro';
 import Bild from '../../components/Bild.astro';
+import BerichtMuster from '../../components/BerichtMuster.astro';
 import { FIRMA_ID, fragenSchema } from '../../lib/schema';
 import { REGION } from '../../lib/firma';
 import { bildUrl } from '../../lib/bilder';
@@ -38,6 +39,7 @@ const dienst = {
     <article class="prosa">
       {d.bild && <Bild class="titelbild" src={d.bild} alt={d.bild_alt ?? ''} sizes="(min-width: 64rem) 40rem, 100vw" wichtig />}
       <Content />
+      {eintrag.id === 'elektrothermografie' && <BerichtMuster />}
       {d.fragen.length > 0 && (
         <section aria-labelledby="fragen-titel">
           <h2 id="fragen-titel">Häufige Fragen</h2>

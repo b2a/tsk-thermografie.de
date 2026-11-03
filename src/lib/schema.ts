@@ -23,7 +23,7 @@ export function firmaSchema(leistungen: { titel: string; kurz: string; slug: str
     },
     geo: { '@type': 'GeoCoordinates', latitude: FIRMA.geo.lat, longitude: FIRMA.geo.lng },
     areaServed: [...REGION.map((name) => ({ '@type': 'Place', name })), { '@type': 'Country', name: 'Deutschland' }],
-    knowsAbout: ['Elektrothermografie', 'Infrarot-Thermografie', 'VdS 2860', 'DIN 54191', 'DGUV Vorschrift 3', 'Klausel SK 3602', 'Brandschutz', 'Arbeitsschutz'],
+    knowsAbout: ['Elektrothermografie', 'Infrarot-Thermografie', 'Wärmebild', 'VdS 2860', 'DIN 54191', 'CFPA-E', 'DGUV Vorschrift 3', 'Klausel SK 3602', 'VdS-Prüfung', 'Wiederholungsprüfung', 'Zustandsanalyse', 'Vorbeugende Instandhaltung', 'Schwachstellenanalyse', 'Niederspannungsanlagen', 'Vorbeugender Brandschutz', 'Arbeitsschutz', 'Anlagenverfügbarkeit'],
     employee: TEAM.map((p) => ({
       '@type': 'Person', name: p.name, jobTitle: p.rolle,
       hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Anerkennung', name: `VdS-Anerkennung Sachverständiger für Elektrothermografie ${p.nummer}`, recognizedBy: { '@type': 'Organization', name: 'VdS Schadenverhütung GmbH' } },

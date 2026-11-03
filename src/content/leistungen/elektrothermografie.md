@@ -26,12 +26,23 @@ gealterte Sicherung erzeugen dagegen deutlich mehr Wärme als ihre Nachbarn. Mit
 Auge sieht man das nicht. Eine Wärmebildkamera macht die Infrarotstrahlung sichtbar, die
 jede Oberfläche abgibt, und zeigt solche Stellen als helle, heiße Flecken.
 
+Die Infrarot-Thermografie ist damit eine berührungslose, zerstörungsfreie und bildgebende
+Messmethode für die Zustandsanalyse Ihrer Anlagen. Sie ist Grundlage einer vorbeugenden
+Instandhaltung: Thermische Fehler werden gefunden, bevor sie Ausfallzeiten verursachen –
+das erhöht die Anlagenverfügbarkeit und ist zugleich vorbeugender Brandschutz.
+
+Wir untersuchen Niederspannungsanlagen aller Art: Hauptverteilungen, Unterverteilungen,
+Schaltschränke, Steuerungen, Kompensationsanlagen und Stromschienensysteme.
+
 ## So arbeiten wir
 
 Wir untersuchen Ihre Verteilungen, Schaltschränke und Betriebsmittel im laufenden Betrieb,
 möglichst unter Nennlast. Außer den Abdeckungen, die für den freien Blick nötig sind, wird
 nichts geöffnet oder demontiert. Jede Auffälligkeit dokumentieren wir mit Wärmebild,
 Foto und Messwerten und bewerten, wie dringend sie behoben werden sollte.
+
+Am Ende steht eine Schwachstellenanalyse Ihrer Anlage – mit klarer Reihenfolge, was zuerst
+behoben werden sollte.
 
 1. **Abstimmung:** Wir klären Umfang, Anlagenliste, Termin und die Vorgaben Ihres Versicherers.
 2. **Untersuchung vor Ort:** im laufenden Betrieb, begleitet von einer Elektrofachkraft Ihres Hauses.
@@ -44,6 +55,8 @@ Foto und Messwerten und bewerten, wie dringend sie behoben werden sollte.
   Wer sie früh findet, tauscht eine Klemme statt eines Schaltschranks.
 - **Ausfälle vermeiden.** Ein ungeplanter Stillstand kostet meist ein Vielfaches der Untersuchung.
 - **Brände verhindern.** Elektrische Fehler gehören zu den häufigsten Brandursachen in Betrieben.
+- **Wiederholungsprüfung vergleichen.** Weil wir nach DIN 54191 dokumentieren, sind die
+  Ergebnisse von Jahr zu Jahr vergleichbar – Veränderungen fallen sofort auf.
 - **Instandhaltung planen.** Der Bericht zeigt, was sofort, bald oder erst bei der nächsten
   Wartung erledigt werden muss.
 

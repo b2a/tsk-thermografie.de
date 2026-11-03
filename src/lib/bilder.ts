@@ -1,11 +1,19 @@
 // Bilder kommen direkt aus /wp-content/uploads/ des Webspace. Der Index kennt
 // Größe und vorhandene WordPress-Varianten; daraus entstehen srcset-Angaben.
 import index from '../data/bilder.json';
+import lokal from '../data/bilder-lokal.json';
 
 type Eintrag = { b: number; h: number; v: [number, string][] };
 const WP = '/wp-content/uploads/';
 
 export function bildInfo(src: string) {
+  if (src.startsWith('/bilder/')) {
+    // eigene Bilder; Varianten heißen name-<breite>.jpg, der Schlüssel ist name.jpg
+    const e = (lokal as Record<string, Eintrag & { datei: string }>)[src.slice(8)];
+    if (!e) throw new Error(`Bild fehlt im Index: ${src} – bitte "npm run bilder:index" ausführen.`);
+    const varianten = [...e.v.map(([b, d]) => ({ b, url: encodeURI('/bilder/' + d) })), { b: e.b, url: encodeURI('/bilder/' + e.datei) }];
+    return { src: encodeURI('/bilder/' + e.datei), breite: e.b, hoehe: e.h, varianten };
+  }
   if (!src.startsWith(WP)) return { src, breite: undefined, hoehe: undefined, varianten: [] as { b: number; url: string }[] };
   const rel = decodeURIComponent(src.slice(WP.length));
   const e = (index as Record<string, Eintrag>)[rel];

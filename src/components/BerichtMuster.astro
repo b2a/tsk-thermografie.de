@@ -1,0 +1,42 @@
+---
+// Musterseite aus einem Untersuchungsbericht nach VdS 2860 mit Erklärung der Befundklassen.
+import Bild from './Bild.astro';
+---
+<section class="bericht" aria-labelledby="bericht-titel">
+  <h2 id="bericht-titel">So sieht Ihr Bericht aus</h2>
+  <div class="bericht-raster">
+    <a class="bericht-bild" href="/bilder/musterbericht.jpg">
+      <Bild src="/bilder/musterbericht.jpg" alt="Musterseite aus einem Untersuchungsbericht nach VdS 2860: Kopf mit Bericht-Nummer und Sachverständigem, Thermogramm eines Fehlerstromschutzschalters mit 84,6 Grad Celsius, Originalfoto, Bewertung, vorgeschlagene Maßnahme und Behebungsfrist von drei Monaten." sizes="(min-width: 48rem) 18rem, 80vw" />
+    </a>
+    <div>
+      <p>
+        Jede Auffälligkeit erhält ein eigenes Blatt: Betriebsmittel und Standort, Lastzustand und
+        gemessene Ströme, Emissionsgrad, Thermogramm mit Temperaturskala, Originalfoto, Bewertung,
+        vorgeschlagene Maßnahme und – bei gefährlichen Befunden – eine Frist zur Behebung.
+        Am Ende steht ein Erledigungsvermerk für Ihre Instandhaltung.
+      </p>
+      <p>Die Befunde ordnen wir nach VdS 2860 ein:</p>
+      <dl class="klassen">
+        <div><dt>ok</dt><dd>ohne thermische Auffälligkeit</dd></div>
+        <div><dt>TA</dt><dd>thermische Auffälligkeit gefunden</dd></div>
+        <div class="gefahr"><dt>GTA</dt><dd>gefährliche thermische Auffälligkeit – muss umgehend behoben werden</dd></div>
+        <div><dt>kb</dt><dd>Befund nicht möglich, mit Begründung (z. B. nicht zugänglich)</dd></div>
+        <div><dt>nTA</dt><dd>Auffälligkeit nicht thermischer Art, z. B. fehlende Abdeckung</dd></div>
+      </dl>
+      <p class="klein">Musterseite mit erfundenen Kundendaten. Ein Klick öffnet sie in voller Größe.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .bericht { margin-top: var(--s-7); }
+  .bericht-raster { display: grid; gap: var(--s-5); }
+  @media (min-width: 48rem) { .bericht-raster { grid-template-columns: 16rem 1fr; align-items: start; } }
+  .bericht-bild { display: block; max-width: 22rem; border: 1px solid var(--linie); padding: var(--s-1); background: #fff; box-shadow: 0 6px 18px rgb(10 20 70 / 0.08); }
+  .bericht-bild:hover { border-color: var(--glut); }
+  .klassen { margin: 0 0 var(--s-4); display: grid; gap: var(--s-2); }
+  .klassen div { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s-3); align-items: baseline; }
+  .klassen dt { font-weight: 700; color: var(--tinte); font-family: var(--schrift-titel); }
+  .klassen dd { margin: 0; }
+  .klassen .gefahr dt { color: var(--glut); }
+  .klein { font-size: 0.95rem; color: var(--gedaempft); }
+</style>

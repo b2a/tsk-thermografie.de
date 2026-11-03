@@ -1,0 +1,79 @@
+{
+ "musterbericht.jpg": {
+  "b": 790,
+  "h": 1123,
+  "v": [],
+  "datei": "musterbericht.jpg"
+ },
+ "sammelschiene.jpg": {
+  "b": 1600,
+  "h": 1200,
+  "v": [
+   [
+    800,
+    "sammelschiene-800.jpg"
+   ]
+  ],
+  "datei": "sammelschiene-1600.jpg"
+ },
+ "thermogramme/flir0005.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0005.jpg"
+ },
+ "thermogramme/flir0018.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0018.jpg"
+ },
+ "thermogramme/flir0025.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0025.jpg"
+ },
+ "thermogramme/flir0027.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0027.jpg"
+ },
+ "thermogramme/flir0034.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0034.jpg"
+ },
+ "thermogramme/flir0035.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0035.jpg"
+ },
+ "thermogramme/flir0036.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0036.jpg"
+ },
+ "thermogramme/flir0062.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0062.jpg"
+ },
+ "thermogramme/flir0072.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/flir0072.jpg"
+ },
+ "thermogramme/ir_0009.jpg": {
+  "b": 640,
+  "h": 480,
+  "v": [],
+  "datei": "thermogramme/ir_0009.jpg"
+ }
+}
