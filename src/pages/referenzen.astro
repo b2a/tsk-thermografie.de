@@ -1,0 +1,50 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import AnfrageBand from '../components/AnfrageBand.astro';
+import Bild from '../components/Bild.astro';
+import { BEISPIELE, BEFUNDE } from '../data/beispiele';
+import { bildUrl } from '../lib/bilder';
+---
+<Basis
+  titel="Beispiele aus der Praxis – Wärmebilder elektrischer Anlagen"
+  beschreibung="So sieht ein Befund der Elektrothermografie aus: Wärmebild und Foto einer überhitzten Klemme, typische Fehler in Schaltschränken und Verteilungen."
+  bild={bildUrl(BEISPIELE[0].bild, 1200)}
+  brotkrumen={[]}
+>
+  <Seitenkopf titel="Beispiele aus der Praxis" einleitung="Wärmebild und Foto nebeneinander: So dokumentieren wir jede Auffälligkeit im Bericht – nachvollziehbar auch für alle, die nicht vor Ort waren." />
+  <section class="abschnitt">
+    <div class="huelle">
+      {BEISPIELE.map((b) => (
+        <figure class="beispiel">
+          <Bild src={b.bild} alt={b.alt} sizes="(min-width: 72rem) 72rem, 100vw" fallback={1536} wichtig />
+          <figcaption>
+            <h2>{b.titel}</h2>
+            <p class="ort">{b.ort}</p>
+            <p>{b.befund}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+  <section class="abschnitt abschnitt-grau" aria-labelledby="befunde-titel">
+    <div class="huelle">
+      <div class="abschnitt-kopf">
+        <h2 id="befunde-titel">Was wir häufig finden</h2>
+        <p>Die meisten Befunde haben einfache Ursachen – und sind günstig zu beheben, wenn man sie rechtzeitig kennt.</p>
+      </div>
+      <ul class="befunde">{BEFUNDE.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  </section>
+  <AnfrageBand />
+</Basis>
+<style>
+  .beispiel { margin: 0 0 var(--s-7); }
+  .beispiel :global(img) { border-radius: var(--radius); width: 100%; }
+  .beispiel figcaption { max-width: var(--text-breite); margin-top: var(--s-4); }
+  .beispiel h2 { font-size: 1.5rem; margin-bottom: var(--s-1); }
+  .ort { color: var(--gedaempft); font-size: 1rem; }
+  .befunde { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-3) var(--s-6); grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  .befunde li { padding-left: var(--s-5); position: relative; }
+  .befunde li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--glut); }
+</style>

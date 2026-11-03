@@ -1,0 +1,210 @@
+---
+import '@fontsource/barlow/400.css';
+import '@fontsource/barlow/600.css';
+import '@fontsource/barlow/400-italic.css';
+import '@fontsource/barlow-semi-condensed/600.css';
+import '@fontsource/barlow-semi-condensed/700.css';
+import '@fontsource/barlow-semi-condensed/700-italic.css';
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import { FIRMA, NAVIGATION } from '../lib/firma';
+import { firmaSchema } from '../lib/schema';
+
+interface Props {
+  titel: string;
+  beschreibung: string;
+  bild?: string;
+  jsonld?: Record<string, unknown>[];
+  /** Brotkrumen: [Name, Pfad] – die aktuelle Seite wird automatisch angehängt */
+  brotkrumen?: [string, string][];
+  noindex?: boolean;
+  /** Firmen-Schema vollständig ausgeben (Startseite, Über uns, Kontakt) */
+  firma?: boolean;
+}
+const { titel, beschreibung, bild, jsonld = [], brotkrumen, noindex = false, firma = false } = Astro.props;
+const pfad = Astro.url.pathname;
+const kanonisch = new URL(pfad, Astro.site);
+const startseite = pfad === '/';
+const seitentitel = startseite ? titel : `${titel} | TSK Thermografie`;
+const bildUrl = new URL(bild ?? '/teilen.jpg', Astro.site);
+const leistungen = (await getCollection('leistungen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+
+const daten = [
+  ...(firma ? [firmaSchema(leistungen.map((l) => ({ titel: l.data.titel, kurz: l.data.kurz, slug: l.id })))] : []),
+  ...jsonld,
+  ...(brotkrumen ? [{
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [['Start', '/'], ...brotkrumen, [titel, pfad]].map(([name, url], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(url, Astro.site).href })),
+  }] : []),
+];
+// "<" maskieren, damit Inhalte das Skript-Element nicht beenden können
+const ld = (o: unknown) => JSON.stringify(o).replace(/</g, '\\u003c');
+const aktiv = (href: string) => pfad.startsWith(href);
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{seitentitel}</title>
+    <meta name="description" content={beschreibung} />
+    <link rel="canonical" href={kanonisch} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a1446" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={kanonisch} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="TSK Thermografie" />
+    <meta property="og:title" content={titel} />
+    <meta property="og:description" content={beschreibung} />
+    <meta property="og:image" content={bildUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="text/plain" title="Kurzinfo für KI-Assistenten" href="/llms.txt" />
+    {daten.map((d) => <script type="application/ld+json" set:html={ld(d)} />)}
+  </head>
+  <body>
+    <a class="sprung" href="#inhalt">Zum Inhalt springen</a>
+    <header class="kopf">
+      <div class="huelle kopf-innen">
+        <a class="marke" href="/" aria-label="TSK Thermografie, zur Startseite">
+          <span class="marke-tsk" aria-hidden="true">TSK</span>
+          <span class="marke-zeile" aria-hidden="true">Thermografie &amp; Sachverständigenbüro<br />Frank Klingelhöfer</span>
+        </a>
+        <nav class="haupt" aria-label="Hauptnavigation">
+          <ul>
+            {NAVIGATION.map((n) => <li><a href={n.href} aria-current={aktiv(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+          </ul>
+        </nav>
+        <a class="knopf kopf-cta" href="/kontakt/">Anfrage stellen</a>
+        <details class="mobil">
+          <summary><span class="sr-only">Menü</span><span aria-hidden="true" class="burger"></span></summary>
+          <nav aria-label="Hauptnavigation mobil">
+            <ul>
+              {NAVIGATION.map((n) => <li><a href={n.href} aria-current={aktiv(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+              <li><a href="/kontakt/" aria-current={aktiv('/kontakt/') ? 'page' : undefined}>Anfrage stellen</a></li>
+              <li><a href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>Anrufen: {FIRMA.telefonAnzeige}</a></li>
+            </ul>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="fuss">
+      <div class="huelle fuss-raster">
+        <div>
+          <p class="fuss-name">{FIRMA.name}</p>
+          <address>
+            {FIRMA.strasse}<br />{FIRMA.plz} {FIRMA.ort}<br />
+            <a href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>{FIRMA.telefonAnzeige}</a><br />
+            <a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a>
+          </address>
+          <p>Einsatzgebiet: {FIRMA.einsatzgebiet}</p>
+        </div>
+        <nav aria-label="Leistungen">
+          <p class="fuss-titel">Leistungen</p>
+          <ul>
+            {leistungen.map((l) => <li><a href={`/leistungen/${l.id}/`}>{l.data.kurztitel}</a></li>)}
+          </ul>
+        </nav>
+        <nav aria-label="Weitere Seiten">
+          <p class="fuss-titel">Büro</p>
+          <ul>
+            <li><a href="/ueber-uns/">Über uns und Zertifikate</a></li>
+            <li><a href="/referenzen/">Beispiele aus der Praxis</a></li>
+            <li><a href="/faq/">Rechtssicherheit und Fragen</a></li>
+            <li><a href="/kontakt/">Kontakt und Anfrage</a></li>
+            <li><a href="/impressum/">Impressum</a></li>
+            <li><a href="/datenschutz/">Datenschutz</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .sprung {
+    position: absolute; left: var(--s-2); top: -4rem; z-index: 10;
+    padding: var(--s-2) var(--s-4); background: var(--tinte); color: #fff;
+  }
+  .sprung:focus { top: var(--s-2); }
+  main:focus { outline: none; }
+
+  .kopf { background: var(--papier); border-bottom: 1px solid var(--linie); position: relative; }
+  /* die Wärmebild-Skala als dünne Linie über der Seite */
+  .kopf::before { content: ''; display: block; height: 5px; background: var(--skala); }
+  .kopf-innen { display: flex; align-items: center; gap: var(--s-5); min-height: 4.75rem; }
+
+  .marke {
+    display: flex; align-items: center; gap: var(--s-3);
+    color: var(--marine); text-decoration: none; margin-right: auto;
+  }
+  .marke-tsk {
+    font: italic 700 2.35rem/1 var(--schrift-titel);
+    letter-spacing: -0.02em;
+    padding-right: var(--s-3);
+    border-right: 2px solid var(--marine);
+  }
+  .marke-zeile { font: italic 600 0.82rem/1.25 var(--schrift); color: var(--tinte); }
+
+  .haupt ul, .mobil ul, .fuss ul { list-style: none; margin: 0; padding: 0; }
+  .haupt ul { display: flex; gap: var(--s-1); }
+  .haupt a {
+    display: block; padding: var(--s-2) var(--s-3);
+    color: var(--tinte); font-weight: 600; text-decoration: none;
+    border-bottom: 3px solid transparent;
+  }
+  .haupt a:hover { border-bottom-color: var(--linie); color: var(--tinte); }
+  .haupt a[aria-current='page'] { border-bottom-color: var(--glut); }
+  .kopf-cta { min-height: 2.75rem; padding-inline: var(--s-4); }
+
+  .mobil { display: none; position: relative; }
+  .mobil summary {
+    list-style: none; cursor: pointer; width: 3rem; height: 3rem;
+    display: grid; place-items: center; border: 1px solid var(--linie); border-radius: var(--radius);
+  }
+  .mobil summary::-webkit-details-marker { display: none; }
+  .burger, .burger::before, .burger::after { display: block; width: 1.25rem; height: 2px; background: var(--tinte); position: relative; }
+  .burger::before, .burger::after { content: ''; position: absolute; left: 0; }
+  .burger::before { top: -6px; }
+  .burger::after { top: 6px; }
+  .mobil[open] .burger { background: transparent; }
+  .mobil[open] .burger::before { top: 0; transform: rotate(45deg); }
+  .mobil[open] .burger::after { top: 0; transform: rotate(-45deg); }
+  .mobil nav {
+    position: absolute; right: 0; top: calc(100% + var(--s-2)); z-index: 5;
+    width: min(19rem, calc(100vw - 2rem));
+    background: var(--papier); border: 1px solid var(--linie); border-radius: var(--radius);
+    box-shadow: 0 10px 28px rgb(10 20 70 / 0.14);
+  }
+  .mobil a { display: block; padding: var(--s-3) var(--s-4); color: var(--tinte); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--grund); }
+  .mobil a[aria-current='page'] { box-shadow: inset 4px 0 0 var(--glut); }
+
+  @media (max-width: 60rem) {
+    .haupt, .kopf-cta { display: none; }
+    .mobil { display: block; }
+  }
+  @media (max-width: 26rem) {
+    .marke-zeile { font-size: 0.72rem; }
+    .marke-tsk { font-size: 2rem; }
+  }
+
+  .fuss { background: var(--tinte); color: #c8cee0; padding-block: var(--s-7) var(--s-8); font-size: 1rem; }
+  .fuss::before { content: ''; display: block; height: 5px; background: var(--skala); margin-top: calc(-1 * var(--s-7)); margin-bottom: var(--s-7); }
+  .fuss a { color: #fff; text-decoration: none; }
+  .fuss a:hover { text-decoration: underline; color: #fff; }
+  .fuss address { font-style: normal; margin-bottom: var(--s-4); }
+  .fuss-name, .fuss-titel { color: #fff; font-weight: 600; }
+  .fuss-raster { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+  .fuss li + li { margin-top: var(--s-2); }
+</style>

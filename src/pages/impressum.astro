@@ -1,0 +1,46 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import PruefHinweis from '../components/PruefHinweis.astro';
+import { FIRMA } from '../lib/firma';
+---
+<Basis titel="Impressum" beschreibung="Impressum von TSK Thermografie & Sachverständigenbüro Frank Klingelhöfer, Lohra." brotkrumen={[]}>
+  <Seitenkopf titel="Impressum" />
+  <section class="abschnitt">
+    <div class="huelle prosa">
+      <PruefHinweis />
+      <h2>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</h2>
+      <p>
+        {FIRMA.name}<br />
+        Inhaber: {FIRMA.inhaber}<br />
+        {FIRMA.strasse}<br />
+        {FIRMA.plz} {FIRMA.ort}
+      </p>
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: <a href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>{FIRMA.telefon}</a><br />
+        E-Mail: <a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a>
+      </p>
+      <h2>Umsatzsteuer</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE 03183601710</p>
+      <h2>Berufliche Anerkennung</h2>
+      <p>
+        Frank Klingelhöfer (Anerkennungs-Nr. ET 24011) und Nino Schneider (Anerkennungs-Nr. ET 26003) sind
+        von der VdS Schadenverhütung GmbH, Amsterdamer Str. 174, 50735 Köln, als Sachverständige für
+        Elektrothermografie anerkannt. Beide sind geprüfte Industriemeister der Fachrichtung Elektrotechnik (IHK Kassel).
+      </p>
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <h2>Haftung für Inhalte und Links</h2>
+      <p>
+        Wir erstellen die Inhalte dieser Website mit Sorgfalt. Für Richtigkeit, Vollständigkeit und Aktualität
+        übernehmen wir dennoch keine Gewähr. Für Inhalte externer Websites, auf die wir verlinken, sind deren
+        Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen entfernen wir betroffene Inhalte oder Links umgehend.
+      </p>
+      <h2>Urheberrecht</h2>
+      <p>Texte und eigene Bilder dieser Website unterliegen dem deutschen Urheberrecht. Eine Verwendung außerhalb dieser Website bedarf unserer Zustimmung.</p>
+      <h2>Bildnachweis</h2>
+      <p>Titelbild der Seite Elektrothermografie: Rolf Weber Gruppe, mit freundlicher Genehmigung. Kamerabilder: Teledyne FLIR.</p>
+    </div>
+  </section>
+</Basis>

@@ -1,0 +1,26 @@
+---
+// Abschluss jeder Seite: direkter Weg zur Anfrage.
+import { FIRMA } from '../lib/firma';
+interface Props { titel?: string }
+const { titel = 'Termin für Ihre Anlage abstimmen' } = Astro.props;
+---
+<section class="band" aria-labelledby="band-titel">
+  <div class="huelle band-innen">
+    <div>
+      <h2 id="band-titel">{titel}</h2>
+      <p>Sagen Sie uns kurz, um welche Anlage es geht. Wir melden uns innerhalb von zwei Werktagen mit einem Vorschlag. Einsatzgebiet: {FIRMA.einsatzgebiet}.</p>
+    </div>
+    <div class="band-aktionen">
+      <a class="knopf" href="/kontakt/">Anfrage stellen</a>
+      <a class="knopf knopf-hell" href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>{FIRMA.telefonAnzeige}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .band { background: var(--tinte); color: #dfe3ef; padding-block: var(--s-8); }
+  .band h2 { color: #fff; }
+  .band p { max-width: 36rem; margin: 0; }
+  .band-innen { display: grid; gap: var(--s-6); align-items: center; }
+  .band-aktionen { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+  @media (min-width: 56rem) { .band-innen { grid-template-columns: 1fr auto; } }
+</style>

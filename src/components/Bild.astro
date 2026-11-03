@@ -1,0 +1,28 @@
+---
+// Responsives Bild aus /wp-content/uploads/ mit srcset der vorhandenen WordPress-Größen.
+import { bildInfo, srcset, bildUrl } from '../lib/bilder';
+
+interface Props {
+  src: string;
+  alt: string;
+  sizes?: string;
+  class?: string;
+  wichtig?: boolean;
+  fallback?: number;
+}
+const { src, alt, sizes = '100vw', class: klasse, wichtig = false, fallback = 800 } = Astro.props;
+const info = bildInfo(src);
+const set = srcset(src);
+---
+<img
+  class={klasse}
+  src={bildUrl(src, fallback)}
+  srcset={set}
+  sizes={set ? sizes : undefined}
+  width={info.breite}
+  height={info.hoehe}
+  alt={alt}
+  loading={wichtig ? 'eager' : 'lazy'}
+  decoding="async"
+  fetchpriority={wichtig ? 'high' : undefined}
+/>

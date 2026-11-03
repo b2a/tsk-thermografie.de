@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import AnfrageBand from '../../components/AnfrageBand.astro';
+
+const leistungen = (await getCollection('leistungen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const liste = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  itemListElement: leistungen.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: l.data.titel, url: new URL(`/leistungen/${l.id}/`, Astro.site).href })),
+};
+---
+<Basis titel="Leistungen" beschreibung="Elektrothermografie nach VdS 2860, Prüfungen nach DGUV Vorschrift 3 und SK 3602, Thermografie für Bau und Industrie, Arbeits- und Brandschutz, Schulungen." brotkrumen={[]} jsonld={[liste]}>
+  <Seitenkopf titel="Leistungen" einleitung="Von der Wärmebild-Untersuchung bis zur vorgeschriebenen Anlagenprüfung – alles, was die Sicherheit Ihrer elektrischen Anlagen betrifft, aus einer Hand." />
+  <section class="abschnitt">
+    <div class="huelle">
+      <ol class="uebersicht">
+        {leistungen.map((l) => (
+          <li>
+            <h2><a href={`/leistungen/${l.id}/`}>{l.data.titel}</a></h2>
+            <p>{l.data.kurz}</p>
+            {l.data.normen.length > 0 && <ul class="normen" aria-label="Grundlagen">{l.data.normen.map((n) => <li>{n}</li>)}</ul>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <AnfrageBand />
+</Basis>
+<style>
+  .uebersicht { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-6); max-width: 48rem; }
+  .uebersicht > li { padding-left: var(--s-5); border-left: 4px solid var(--linie); }
+  .uebersicht > li:first-child { border-left-color: var(--glut); }
+  .uebersicht h2 { font-size: 1.5rem; margin-bottom: var(--s-2); }
+  .uebersicht h2 a { text-decoration: none; }
+  .uebersicht h2 a:hover { text-decoration: underline; }
+  .uebersicht p { color: var(--gedaempft); max-width: var(--text-breite); }
+</style>

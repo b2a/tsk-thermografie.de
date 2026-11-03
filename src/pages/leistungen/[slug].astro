@@ -1,0 +1,78 @@
+---
+import { getCollection, render } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import AnfrageBand from '../../components/AnfrageBand.astro';
+import Bild from '../../components/Bild.astro';
+import { FIRMA_ID, fragenSchema } from '../../lib/schema';
+import { REGION } from '../../lib/firma';
+import { bildUrl } from '../../lib/bilder';
+
+export async function getStaticPaths() {
+  const alle = (await getCollection('leistungen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+  return alle.map((eintrag) => ({ params: { slug: eintrag.id }, props: { eintrag, andere: alle.filter((a) => a.id !== eintrag.id) } }));
+}
+const { eintrag, andere } = Astro.props;
+const { Content } = await render(eintrag);
+const d = eintrag.data;
+const dienst = {
+  '@context': 'https://schema.org', '@type': 'Service',
+  name: d.titel, description: d.beschreibung, serviceType: d.kurztitel,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  provider: { '@id': FIRMA_ID },
+  areaServed: [...REGION.map((name) => ({ '@type': 'Place', name })), { '@type': 'Country', name: 'Deutschland' }],
+};
+---
+<Basis
+  titel={d.titel}
+  beschreibung={d.beschreibung}
+  bild={d.bild ? bildUrl(d.bild, 1200) : undefined}
+  brotkrumen={[['Leistungen', '/leistungen/']]}
+  jsonld={[dienst, ...(d.fragen.length ? [fragenSchema(d.fragen)] : [])]}
+>
+  <Seitenkopf titel={d.titel} einleitung={d.kurz} brotkrumen={[['Leistungen', '/leistungen/']]}>
+    {d.normen.length > 0 && <ul class="normen kopf-normen" aria-label="Grundlagen">{d.normen.map((n) => <li>{n}</li>)}</ul>}
+  </Seitenkopf>
+
+  <div class="huelle raster abschnitt">
+    <article class="prosa">
+      {d.bild && <Bild class="titelbild" src={d.bild} alt={d.bild_alt ?? ''} sizes="(min-width: 64rem) 40rem, 100vw" wichtig />}
+      <Content />
+      {d.fragen.length > 0 && (
+        <section aria-labelledby="fragen-titel">
+          <h2 id="fragen-titel">Häufige Fragen</h2>
+          <div class="fragen">
+            {d.fragen.map((q) => <details><summary>{q.f}</summary><div><p>{q.a}</p></div></details>)}
+          </div>
+        </section>
+      )}
+    </article>
+    <aside class="seite" aria-label="Weitere Leistungen">
+      <div class="kasten">
+        <p class="kasten-titel">Unverbindlich anfragen</p>
+        <p>Nennen Sie uns Anlage und Wunschzeitraum – Sie erhalten einen Terminvorschlag und ein Angebot.</p>
+        <a class="knopf" href={`/kontakt/?leistung=${eintrag.id}`}>Anfrage stellen</a>
+      </div>
+      <p class="kasten-titel">Weitere Leistungen</p>
+      <ul class="andere">
+        {andere.map((a) => <li><a href={`/leistungen/${a.id}/`}>{a.data.kurztitel}</a></li>)}
+      </ul>
+    </aside>
+  </div>
+  <AnfrageBand />
+</Basis>
+<style>
+  .kopf-normen { margin-top: var(--s-5); }
+  .raster { display: grid; gap: var(--s-7); }
+  @media (min-width: 64rem) { .raster { grid-template-columns: minmax(0, 1fr) 18rem; } }
+  .titelbild { border-radius: var(--radius); margin-bottom: var(--s-6); }
+  .seite { align-self: start; }
+  @media (min-width: 64rem) { .seite { position: sticky; top: var(--s-5); } }
+  .kasten { border: 1px solid var(--linie); border-top: 4px solid var(--glut); padding: var(--s-5); margin-bottom: var(--s-6); background: var(--papier); }
+  .kasten p { font-size: 1rem; color: var(--gedaempft); }
+  .kasten-titel { font-weight: 600; color: var(--tinte) !important; margin-bottom: var(--s-2); }
+  .andere { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--linie); }
+  .andere li { border-bottom: 1px solid var(--linie); }
+  .andere a { display: block; padding: var(--s-3) 0; text-decoration: none; font-weight: 600; }
+  .andere a:hover { text-decoration: underline; }
+</style>

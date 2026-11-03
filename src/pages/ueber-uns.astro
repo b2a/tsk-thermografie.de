@@ -1,0 +1,81 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import AnfrageBand from '../components/AnfrageBand.astro';
+import Bild from '../components/Bild.astro';
+import { FIRMA, TEAM, VDS_VERZEICHNIS } from '../lib/firma';
+import { bildInfo } from '../lib/bilder';
+---
+<Basis
+  titel="Über uns – Sachverständigenbüro in Lohra bei Marburg"
+  beschreibung="TSK Thermografie in Lohra: Frank Klingelhöfer und Nino Schneider, Industriemeister Elektrotechnik und VdS-anerkannte Sachverständige für Elektrothermografie."
+  brotkrumen={[]}
+  firma
+>
+  <Seitenkopf titel="Über uns" einleitung={`Ein kleines Sachverständigenbüro aus ${FIRMA.ort} in Mittelhessen – mit zwei Elektrotechnik-Meistern und einem klaren Schwerpunkt: der Sicherheit elektrischer Anlagen.`} />
+
+  <section class="abschnitt">
+    <div class="huelle zwei">
+      <div class="prosa">
+        <p>
+          TSK Thermografie untersucht elektrische und industrielle Anlagen für die vorbeugende und
+          zustandsorientierte Instandhaltung. Unsere Kunden sind Produktions- und Gewerbebetriebe,
+          Verwaltungen und Einrichtungen, die ihre Anlagen sicher betreiben und gegenüber Versicherern
+          und Berufsgenossenschaft belegen wollen.
+        </p>
+        <p>
+          Wer bei Ihnen misst, wertet auch aus, schreibt den Bericht und steht Ihnen für Rückfragen
+          zur Verfügung.
+        </p>
+        <h2>Einsatzgebiet</h2>
+        <p>
+          {FIRMA.einsatzgebiet}: rund um Marburg, Gießen, Wetzlar, Biedenkopf und Dillenburg sind wir
+          kurzfristig vor Ort. Größere Aufträge übernehmen wir in ganz Deutschland.
+        </p>
+      </div>
+      <figure class="kamera">
+        <Bild src="/wp-content/uploads/2026/02/T840-laid-down_Eye-Cup-600x371-1.jpg" alt="Wärmebildkamera FLIR T840 mit Sucher, liegend." sizes="(min-width: 56rem) 30rem, 100vw" fallback={600} />
+        <figcaption>Messtechnik: hochauflösende Wärmebildkameras von FLIR, unter anderem eine FLIR T840.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt-grau" id="zertifikate" aria-labelledby="zert-titel">
+    <div class="huelle">
+      <div class="abschnitt-kopf">
+        <h2 id="zert-titel">Team und Zertifikate</h2>
+        <p>Beide Sachverständige sind im <a href={VDS_VERZEICHNIS} rel="noopener">Verzeichnis des VdS</a> eingetragen. Ein Klick auf das Zertifikat öffnet es in voller Größe.</p>
+      </div>
+      <div class="team">
+        {TEAM.map((p) => (
+          <article class="person">
+            <a class="zert" href={bildInfo(p.zertifikat).src}>
+              <Bild src={p.zertifikat} alt={`VdS-Anerkennung als Sachverständiger für Elektrothermografie von ${p.name}, Nummer ${p.nummer} – in voller Größe öffnen`} sizes="(min-width: 40rem) 16rem, 60vw" fallback={300} />
+            </a>
+            <div>
+              <h3>{p.name}</h3>
+              <p class="rolle">{p.rolle}</p>
+              <ul>{p.qualifikation.map((q) => <li>{q}</li>)}</ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <AnfrageBand />
+</Basis>
+<style>
+  .zwei { display: grid; gap: var(--s-7); }
+  @media (min-width: 56rem) { .zwei { grid-template-columns: 1.2fr 1fr; align-items: start; } }
+  .kamera { margin: 0; }
+  .kamera figcaption { font-size: 0.98rem; color: var(--gedaempft); margin-top: var(--s-2); }
+  .team { display: grid; gap: var(--s-7); grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+  .person { display: grid; grid-template-columns: 10rem 1fr; gap: var(--s-5); align-items: start; }
+  @media (max-width: 30rem) { .person { grid-template-columns: 1fr; } .zert { max-width: 14rem; } }
+  .zert { display: block; background: #fff; border: 1px solid var(--linie); padding: var(--s-1); }
+  .zert:hover { border-color: var(--glut); }
+  .rolle { color: var(--gedaempft); }
+  .person ul { padding-left: 1.1em; margin: 0; }
+  .person li { margin-bottom: var(--s-2); }
+  .person li::marker { color: var(--glut); }
+</style>

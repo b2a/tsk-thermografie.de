@@ -1,0 +1,17 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+---
+<Basis titel="Seite nicht gefunden" beschreibung="Diese Seite gibt es nicht (mehr)." noindex>
+  <Seitenkopf titel="Diese Seite gibt es nicht" einleitung="Vielleicht stammt der Link noch von unserer alten Website. Hier geht es weiter:" />
+  <section class="abschnitt">
+    <div class="huelle prosa">
+      <ul>
+        <li><a href="/">Startseite</a></li>
+        <li><a href="/leistungen/">Leistungen</a></li>
+        <li><a href="/faq/">Rechtssicherheit und Fragen</a></li>
+        <li><a href="/kontakt/">Kontakt und Anfrage</a></li>
+      </ul>
+    </div>
+  </section>
+</Basis>

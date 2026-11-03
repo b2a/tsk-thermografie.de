@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../../layouts/Basis.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { FIRMA } from '../../lib/firma';
+
+const leistungen = (await getCollection('leistungen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const tel = `tel:${FIRMA.telefon.replace(/\s/g, '')}`;
+---
+<Basis
+  titel="Kontakt und Anfrage"
+  beschreibung="Anfrage für Elektrothermografie, Anlagenprüfung oder Schulung stellen. TSK Thermografie, Lohra – Telefon 0151 267 686 01."
+  brotkrumen={[]}
+  firma
+>
+  <Seitenkopf titel="Kontakt und Anfrage" einleitung="Beschreiben Sie kurz Ihre Anlage und Ihren Wunschzeitraum. Wir melden uns mit einem Terminvorschlag und einem Angebot." />
+  <section class="abschnitt">
+    <div class="huelle raster">
+      <form class="formular" method="post" action="/api/anfrage.php" data-danke="/kontakt/danke/" novalidate>
+        <input type="hidden" name="start" value="0" />
+        <div class="feld">
+          <label for="name">Name</label>
+          <input id="name" name="name" autocomplete="name" required maxlength="100" />
+        </div>
+        <div class="feld">
+          <label for="firma">Firma <span class="optional">(optional)</span></label>
+          <input id="firma" name="firma" autocomplete="organization" maxlength="120" />
+        </div>
+        <div class="zeile">
+          <div class="feld">
+            <label for="email">E-Mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="160" />
+          </div>
+          <div class="feld">
+            <label for="telefon">Telefon <span class="optional">(optional)</span></label>
+            <input id="telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40" />
+          </div>
+        </div>
+        <div class="zeile">
+          <div class="feld">
+            <label for="leistung">Worum geht es?</label>
+            <select id="leistung" name="leistung">
+              {leistungen.map((l, i) => <option value={l.id} selected={i === 0}>{l.data.kurztitel}</option>)}
+              <option value="sonstiges">Etwas anderes</option>
+            </select>
+          </div>
+          <div class="feld">
+            <label for="ort">Ort der Anlage <span class="optional">(optional)</span></label>
+            <input id="ort" name="ort" autocomplete="address-level2" maxlength="100" data-hilfe="ort-hilfe" aria-describedby="ort-hilfe" />
+            <p class="hilfe" id="ort-hilfe">z. B. 35037 Marburg</p>
+          </div>
+        </div>
+        <div class="feld">
+          <label for="nachricht">Ihre Nachricht</label>
+          <textarea id="nachricht" name="nachricht" rows="6" required minlength="10" maxlength="5000" data-hilfe="nachricht-hilfe" aria-describedby="nachricht-hilfe"></textarea>
+          <p class="hilfe" id="nachricht-hilfe">Hilfreich: Art und Größe der Anlage (z. B. Anzahl Verteilungen), Wunschzeitraum, Vorgaben Ihres Versicherers.</p>
+        </div>
+        <div class="koeder" aria-hidden="true">
+          <label for="webseite">Bitte leer lassen</label>
+          <input id="webseite" name="webseite" tabindex="-1" autocomplete="off" />
+        </div>
+        <p class="hinweis">
+          Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr dazu in der
+          <a href="/datenschutz/#anfrage">Datenschutzerklärung</a>.
+        </p>
+        <p class="meldung" data-meldung role="alert" tabindex="-1"></p>
+        <button class="knopf" type="submit">Anfrage senden</button>
+      </form>
+
+      <aside class="direkt" aria-labelledby="direkt-titel">
+        <h2 id="direkt-titel">Direkt erreichen</h2>
+        <p><a class="gross" href={tel}>{FIRMA.telefonAnzeige}</a></p>
+        <p><a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a></p>
+        <address>
+          {FIRMA.name}<br />
+          {FIRMA.strasse}<br />
+          {FIRMA.plz} {FIRMA.ort}
+        </address>
+        <p class="gebiet">Einsatzgebiet: {FIRMA.einsatzgebiet}</p>
+      </aside>
+    </div>
+  </section>
+</Basis>
+
+<script>
+  import { formular } from '../../lib/formular-client';
+  const form = document.querySelector<HTMLFormElement>('form.formular');
+  if (form) {
+    // Leistung aus dem Link übernehmen (z. B. /kontakt/?leistung=schulungen)
+    const gewuenscht = new URLSearchParams(location.search).get('leistung');
+    const auswahl = form.querySelector<HTMLSelectElement>('#leistung');
+    if (gewuenscht && auswahl && [...auswahl.options].some((o) => o.value === gewuenscht)) auswahl.value = gewuenscht;
+    formular(form);
+  }
+</script>
+
+<style>
+  .raster { display: grid; gap: var(--s-7); }
+  @media (min-width: 60rem) { .raster { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); } }
+  .formular { max-width: 40rem; }
+  .zeile { display: grid; gap: 0 var(--s-5); }
+  @media (min-width: 36rem) { .zeile { grid-template-columns: 1fr 1fr; } }
+  .feld { margin-bottom: var(--s-5); }
+  .feld label { display: block; font-weight: 600; color: var(--tinte); margin-bottom: var(--s-1); }
+  .optional { font-weight: 400; color: var(--gedaempft); }
+  .feld input, .feld select, .feld textarea {
+    width: 100%; min-height: 3rem; padding: var(--s-2) var(--s-3);
+    font: inherit; color: var(--text); background: #fff;
+    border: 1px solid #8a93ab; border-radius: var(--radius);
+  }
+  .feld textarea { resize: vertical; min-height: 9rem; }
+  .feld input:focus-visible, .feld select:focus-visible, .feld textarea:focus-visible { outline: 3px solid var(--glut); outline-offset: 0; border-color: var(--tinte); }
+  .feld [aria-invalid='true'] { border-color: #b42318; border-width: 2px; }
+  .hilfe { font-size: 0.95rem; color: var(--gedaempft); margin: var(--s-1) 0 0; }
+  .formular :global(.feld-fehler) { color: #b42318; font-size: 0.98rem; font-weight: 600; margin: var(--s-1) 0 0; }
+  .koeder { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .hinweis { font-size: 0.98rem; color: var(--gedaempft); }
+  .meldung:empty { display: none; }
+  .meldung { padding: var(--s-3) var(--s-4); border-radius: var(--radius); }
+  .meldung.fehler { background: #fdecea; color: #8a1c13; border-left: 4px solid #b42318; }
+
+  .direkt { align-self: start; padding: var(--s-5); background: var(--grund); border-top: 4px solid var(--tinte); }
+  .direkt h2 { font-size: 1.35rem; }
+  .gross { font: 700 1.6rem/1.2 var(--schrift-titel); text-decoration: none; color: var(--tinte); }
+  .gross:hover { color: var(--glut-dunkel); }
+  .direkt address { font-style: normal; margin-bottom: var(--s-4); }
+  .gebiet { color: var(--gedaempft); margin: 0; }
+</style>

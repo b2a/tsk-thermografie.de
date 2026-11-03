@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import Basis from '../layouts/Basis.astro';
+import Bild from '../components/Bild.astro';
+import AnfrageBand from '../components/AnfrageBand.astro';
+import { FIRMA, TEAM, VDS_VERZEICHNIS } from '../lib/firma';
+
+const leistungen = (await getCollection('leistungen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const THERMOGRAMM = '/wp-content/uploads/2019/06/Screenshot-2026-03-16-180448.jpg';
+---
+<Basis
+  titel="Elektrothermografie nach VdS 2860 | TSK Thermografie, Lohra (Mittelhessen)"
+  beschreibung="VdS-anerkannte Sachverständige für Elektrothermografie aus Lohra bei Marburg: Thermografie elektrischer Anlagen nach VdS 2860 und DIN 54191, DGUV V3 und SK 3602."
+  firma
+>
+  <section class="held">
+    <div class="huelle held-raster">
+      <div class="held-text">
+        <h1>Heiße Stellen finden, bevor sie zum Schaden werden.</h1>
+        <p class="held-lead">
+          Wir untersuchen elektrische Anlagen mit der Wärmebildkamera – im laufenden Betrieb,
+          durch zwei VdS-anerkannte Sachverständige und mit Bericht nach VdS 2860 für Ihren Versicherer.
+        </p>
+        <div class="held-aktionen">
+          <a class="knopf" href="/kontakt/">Anfrage stellen</a>
+          <a class="knopf knopf-rand" href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>Anrufen: {FIRMA.telefonAnzeige}</a>
+        </div>
+        <p class="held-nachweis">
+          VdS-Anerkennungen {TEAM.map((p) => p.nummer).join(' und ')}, öffentlich einsehbar im{' '}
+          <a href={VDS_VERZEICHNIS} rel="noopener">Verzeichnis des VdS</a>.
+        </p>
+      </div>
+
+      <figure class="thermo">
+        <div class="thermo-bild">
+          <Bild
+            src={THERMOGRAMM}
+            alt="Wärmebild eines Schaltschranks: Eine Klemme an einem Motorstarter leuchtet weiß und rot, gemessen 102 Grad Celsius, die Nachbarn bleiben grün und gelb."
+            sizes="(min-width: 60rem) 34rem, 100vw"
+            wichtig
+            fallback={1024}
+          />
+          <div class="skala" aria-hidden="true"></div>
+        </div>
+        <figcaption>
+          Aus einer unserer Untersuchungen: Eine Anschlussklemme an einem Motorstarter erreicht 102 °C,
+          ihre Nachbarn liegen bei rund 35 °C. Ohne Wärmebild wäre das bis zum Ausfall unbemerkt geblieben.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="abschnitt" aria-labelledby="leistungen-titel">
+    <div class="huelle">
+      <div class="abschnitt-kopf">
+        <h2 id="leistungen-titel">Leistungen</h2>
+        <p>Schwerpunkt ist die Elektrothermografie. Dazu kommen die Prüfungen, die Versicherer und Berufsgenossenschaft verlangen – abgestimmt aus einer Hand.</p>
+      </div>
+      <ul class="leistungen">
+        {leistungen.map((l) => (
+          <li>
+            <a href={`/leistungen/${l.id}/`}>
+              <h3>{l.data.kurztitel}</h3>
+              <p>{l.data.kurz}</p>
+            </a>
+            {l.data.normen.length > 0 && (
+              <ul class="normen" aria-label="Grundlagen">
+                {l.data.normen.slice(0, 3).map((n) => <li>{n}</li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt-grau" aria-labelledby="vds-titel">
+    <div class="huelle zwei">
+      <div>
+        <h2 id="vds-titel">Warum die VdS-Anerkennung zählt</h2>
+        <p>
+          Einen Untersuchungsbericht nach VdS 2860 dürfen nur Sachverständige erstellen, die der VdS
+          ausdrücklich für Elektrothermografie anerkannt hat. Erkennbar ist das an der Anerkennungsnummer
+          mit „ET“. Andere Prüfberichte oder Befundscheine erfüllen die Anforderungen der
+          Feuerversicherer nicht.
+        </p>
+        <p>Beide Sachverständige unseres Büros haben diese Anerkennung – Sie können sie im Verzeichnis des VdS selbst nachprüfen.</p>
+        <p><a href="/faq/">Was Betreiber zur Rechtssicherheit wissen sollten</a></p>
+      </div>
+      <ol class="ablauf" aria-label="Ablauf einer Untersuchung">
+        <li><strong>Abstimmung</strong> Umfang, Anlagenliste, Termin und Vorgaben Ihres Versicherers.</li>
+        <li><strong>Untersuchung vor Ort</strong> im laufenden Betrieb, möglichst unter Last.</li>
+        <li><strong>Auswertung</strong> jede Auffälligkeit mit Wärmebild, Foto und Messwerten.</li>
+        <li><strong>Bericht nach VdS 2860</strong> mit Dringlichkeit und Maßnahmen, bereit für den Versicherer.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="abschnitt" aria-labelledby="team-titel">
+    <div class="huelle">
+      <div class="abschnitt-kopf">
+        <h2 id="team-titel">Zwei Industriemeister, zwei ET-Anerkennungen</h2>
+        <p>Frank Klingelhöfer und Nino Schneider sind geprüfte Industriemeister der Fachrichtung Elektrotechnik und vom VdS als Sachverständige für Elektrothermografie anerkannt.</p>
+      </div>
+      <div class="team">
+        {TEAM.map((p) => (
+          <figure class="person">
+            <a href="/ueber-uns/#zertifikate" class="person-bild">
+              <Bild src={p.zertifikat} alt={`VdS-Anerkennung von ${p.name}, Nummer ${p.nummer}`} sizes="(min-width: 40rem) 12rem, 40vw" fallback={300} />
+            </a>
+            <figcaption>
+              <strong>{p.name}</strong>
+              <span>{p.rolle}</span>
+              <span>Anerkennungsnummer {p.nummer}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <AnfrageBand />
+</Basis>
+
+<style>
+  .held { padding-block: var(--s-7) var(--s-8); background: var(--papier); }
+  .held-raster { display: grid; gap: var(--s-7); align-items: center; }
+  .held-lead { font-size: 1.25rem; color: var(--gedaempft); max-width: 34rem; }
+  .held-aktionen { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block: var(--s-5); }
+  .held-nachweis { font-size: 0.98rem; color: var(--gedaempft); }
+
+  .thermo { margin: 0; }
+  .thermo-bild { display: grid; grid-template-columns: 1fr auto; gap: var(--s-3); }
+  /* nur die Wärmebild-Hälfte der Aufnahme zeigen */
+  .thermo-bild :global(img) {
+    width: 100%; aspect-ratio: 4 / 3.1; object-fit: cover; object-position: 0 50%;
+    border-radius: var(--radius);
+  }
+  .skala { width: 0.75rem; border-radius: 2px; background: var(--skala-hoch); }
+  .thermo figcaption { font-size: 0.98rem; color: var(--gedaempft); margin-top: var(--s-3); max-width: 36rem; }
+
+  @media (min-width: 60rem) {
+    .held-raster { grid-template-columns: 1.05fr 1fr; }
+  }
+
+  .leistungen { list-style: none; padding: 0; margin: 0; border-top: 2px solid var(--tinte); }
+  .leistungen > li {
+    display: grid; gap: var(--s-2) var(--s-6); padding-block: var(--s-5);
+    border-bottom: 1px solid var(--linie);
+  }
+  .leistungen > li > a { text-decoration: none; color: inherit; }
+  .leistungen h3 { margin-bottom: var(--s-1); color: var(--marine); }
+  .leistungen > li > a:hover h3 { color: var(--glut-dunkel); text-decoration: underline; text-underline-offset: 0.18em; }
+  .leistungen p { margin: 0; color: var(--gedaempft); max-width: 40rem; }
+  @media (min-width: 56rem) {
+    .leistungen > li { grid-template-columns: 1fr 17rem; align-items: start; }
+    .leistungen .normen { justify-content: flex-end; padding-top: var(--s-1); }
+  }
+
+  .zwei { display: grid; gap: var(--s-7); }
+  @media (min-width: 56rem) { .zwei { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .zwei p { max-width: var(--text-breite); }
+
+  .ablauf { list-style: none; counter-reset: schritt; padding: 0; margin: 0; }
+  .ablauf li {
+    counter-increment: schritt; position: relative;
+    padding: 0 0 var(--s-5) 3.25rem; color: var(--gedaempft);
+  }
+  .ablauf li::before {
+    content: counter(schritt); position: absolute; left: 0; top: 0;
+    width: 2.25rem; height: 2.25rem; display: grid; place-items: center;
+    font: 700 1.1rem/1 var(--schrift-titel); color: #fff; background: var(--tinte); border-radius: 50%;
+  }
+  /* Verbindungslinie zwischen den Schritten */
+  .ablauf li:not(:last-child)::after {
+    content: ''; position: absolute; left: calc(1.125rem - 1px); top: 2.5rem; bottom: var(--s-1);
+    width: 2px; background: var(--linie);
+  }
+  .ablauf li:last-child::before { background: var(--glut); }
+  .ablauf strong { display: block; color: var(--tinte); font-size: 1.15rem; }
+
+  .team { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .person { margin: 0; display: grid; grid-template-columns: 8.5rem 1fr; gap: var(--s-4); align-items: start; }
+  .person-bild { display: block; border: 1px solid var(--linie); padding: var(--s-1); background: #fff; }
+  .person-bild:hover { border-color: var(--glut); }
+  .person figcaption { display: grid; gap: var(--s-1); color: var(--gedaempft); font-size: 1rem; }
+  .person strong { color: var(--tinte); font-size: 1.2rem; }
+</style>

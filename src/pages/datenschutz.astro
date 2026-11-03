@@ -1,0 +1,82 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import PruefHinweis from '../components/PruefHinweis.astro';
+import { FIRMA } from '../lib/firma';
+---
+<Basis titel="Datenschutzerklärung" beschreibung="Datenschutzerklärung von TSK Thermografie: keine Cookies, kein Tracking, Anfragen verschlüsselt gespeichert." brotkrumen={[]}>
+  <Seitenkopf titel="Datenschutzerklärung" einleitung="Kurz gesagt: Diese Website setzt keine Cookies, verwendet kein Tracking und lädt keine Inhalte von fremden Servern. Daten verarbeiten wir nur, wenn Sie uns schreiben." />
+  <section class="abschnitt">
+    <div class="huelle prosa">
+      <PruefHinweis />
+      <h2>Verantwortlicher</h2>
+      <p>
+        {FIRMA.name}<br />{FIRMA.inhaber}<br />{FIRMA.strasse}, {FIRMA.plz} {FIRMA.ort}<br />
+        Telefon {FIRMA.telefon}, E-Mail <a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a>
+      </p>
+
+      <h2>Aufruf der Website und Server-Protokolle</h2>
+      <p>
+        Beim Aufruf der Website übermittelt Ihr Browser technisch notwendige Daten an unseren Server:
+        IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, übertragene Datenmenge, verweisende Seite sowie
+        Browser und Betriebssystem. Diese Daten werden in Protokolldateien gespeichert, um den Betrieb und die
+        Sicherheit der Website zu gewährleisten (Art. 6 Abs. 1 lit. f DSGVO). Die Protokolle werden nach
+        spätestens 7 Tagen gelöscht oder anonymisiert, sofern sie nicht zur Aufklärung eines Angriffs benötigt werden.
+      </p>
+
+      <h2>Hosting</h2>
+      <p>
+        Die Website wird bei der ALL-INKL.COM – Neue Medien Münnich, Hauptstraße 68, 02742 Friedersdorf,
+        gehostet. Die Server stehen in Deutschland. Mit dem Anbieter besteht ein Vertrag zur
+        Auftragsverarbeitung nach Art. 28 DSGVO.
+      </p>
+
+      <h2>Keine Cookies, kein Tracking, keine fremden Inhalte</h2>
+      <p>
+        Wir setzen keine Cookies und keine Analyse- oder Werbedienste ein. Schriften und Bilder liegen auf
+        unserem eigenen Server; beim Aufruf werden keine Daten an Dritte wie Google übertragen.
+      </p>
+
+      <h2 id="anfrage">Anfrageformular und E-Mail</h2>
+      <p>
+        Wenn Sie uns über das Formular oder per E-Mail schreiben, verarbeiten wir Ihre Angaben (Name, Firma,
+        E-Mail-Adresse, Telefonnummer, Ort der Anlage, Nachricht), um Ihre Anfrage zu beantworten und ein Angebot
+        zu erstellen (Art. 6 Abs. 1 lit. b DSGVO). Pflichtangaben sind Name, E-Mail-Adresse und Nachricht.
+      </p>
+      <p>
+        Anfragen über das Formular werden auf unserem Server verschlüsselt gespeichert und anschließend per E-Mail
+        an uns weitergeleitet. So geht keine Anfrage verloren, falls eine E-Mail nicht ankommt. Zum Schutz vor
+        Missbrauch speichern wir für höchstens 24 Stunden einen nicht rückrechenbaren Prüfwert Ihrer IP-Adresse
+        und die Zahl der gesendeten Anfragen (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+      <p>
+        Gespeicherte Anfragen löschen wir, sobald sie erledigt sind und keine gesetzlichen Aufbewahrungspflichten
+        bestehen – spätestens nach zwölf Monaten. Wird aus der Anfrage ein Auftrag, gelten die handels- und
+        steuerrechtlichen Aufbewahrungsfristen.
+      </p>
+
+      <h2>Links zu anderen Websites</h2>
+      <p>Wir verlinken z. B. auf das Verzeichnis des VdS. Erst wenn Sie einen solchen Link anklicken, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
+
+      <h2>Ihre Rechte</h2>
+      <p>Sie haben das Recht auf</p>
+      <ul>
+        <li>Auskunft über die zu Ihnen gespeicherten Daten (Art. 15 DSGVO),</li>
+        <li>Berichtigung (Art. 16 DSGVO) und Löschung (Art. 17 DSGVO),</li>
+        <li>Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+        <li>Datenübertragbarkeit (Art. 20 DSGVO),</li>
+        <li>Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO).</li>
+      </ul>
+      <p>Eine formlose Nachricht an die oben genannte Adresse genügt.</p>
+      <p>
+        Sie können sich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren, zum Beispiel beim
+        Hessischen Beauftragten für Datenschutz und Informationsfreiheit, Postfach 3163, 65021 Wiesbaden.
+      </p>
+
+      <h2>Verschlüsselung</h2>
+      <p>Die Verbindung zu dieser Website ist per TLS verschlüsselt (erkennbar an „https://“).</p>
+
+      <p><em>Stand: November 2026</em></p>
+    </div>
+  </section>
+</Basis>

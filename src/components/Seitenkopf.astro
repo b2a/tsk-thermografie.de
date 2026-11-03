@@ -1,0 +1,19 @@
+---
+// Kopfbereich der Unterseiten mit sichtbaren Brotkrumen.
+interface Props { titel: string; einleitung?: string; brotkrumen?: [string, string][] }
+const { titel, einleitung, brotkrumen = [] } = Astro.props;
+---
+<header class="seitenkopf">
+  <div class="huelle">
+    <nav class="brotkrumen" aria-label="Brotkrumen">
+      <ol>
+        <li><a href="/">Start</a></li>
+        {brotkrumen.map(([name, href]) => <li><a href={href}>{name}</a></li>)}
+        <li aria-current="page">{titel}</li>
+      </ol>
+    </nav>
+    <h1>{titel}</h1>
+    {einleitung && <p>{einleitung}</p>}
+    <slot />
+  </div>
+</header>

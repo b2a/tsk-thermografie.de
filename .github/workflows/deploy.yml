@@ -1,0 +1,67 @@
+# Baut die Website bei jedem Push auf main und lädt sie per FTPS auf den
+# All-Inkl-Webspace (dort gibt es kein SSH, deshalb lftp statt rsync).
+name: Website veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      WEBSITE_URL: ${{ vars.WEBSITE_URL }}       # z. B. https://neu.tsk-thermografie.de, später https://tsk-thermografie.de
+      ORDNER: ${{ vars.WEBSITE_ORDNER }}         # z. B. tsk-website
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Website bauen
+        run: npm run build
+
+      - name: lftp installieren
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Website hochladen (FTPS)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORT: ${{ secrets.FTP_PASSWORT }}
+        run: |
+          test -n "$ORDNER" || { echo "::error::Variable WEBSITE_ORDNER fehlt"; exit 1; }
+          lftp -u "$FTP_USER,$FTP_PASSWORT" "$FTP_HOST" <<LFTP
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:max-retries 3
+          mirror --reverse --delete --only-newer --parallel=4 --verbose=1 \
+            --exclude-glob wp-content/ \
+            --exclude-glob .well-known/ \
+            dist/ /$ORDNER/
+          bye
+          LFTP
+
+      - name: Erreichbarkeit prüfen
+        if: env.WEBSITE_URL != ''
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$WEBSITE_URL/")
+          echo "Startseite: $code"
+          test "$code" = 200 || echo "::warning::$WEBSITE_URL antwortet mit $code"

@@ -1,0 +1,14 @@
+---
+import Basis from '../../layouts/Basis.astro';
+import Seitenkopf from '../../components/Seitenkopf.astro';
+import { FIRMA } from '../../lib/firma';
+---
+<Basis titel="Anfrage gesendet" beschreibung="Ihre Anfrage ist bei uns angekommen." noindex>
+  <Seitenkopf titel="Anfrage gesendet" einleitung="Vielen Dank. Ihre Anfrage ist bei uns angekommen – wir melden uns in der Regel innerhalb von zwei Werktagen." brotkrumen={[['Kontakt', '/kontakt/']]} />
+  <section class="abschnitt">
+    <div class="huelle prosa">
+      <p>Eilt es? Dann rufen Sie uns gern direkt an: <a href={`tel:${FIRMA.telefon.replace(/\s/g, '')}`}>{FIRMA.telefonAnzeige}</a>.</p>
+      <p><a href="/leistungen/">Zurück zu den Leistungen</a></p>
+    </div>
+  </section>
+</Basis>

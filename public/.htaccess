@@ -1,0 +1,56 @@
+# TSK Thermografie – statische Website (von GitHub Actions hochgeladen)
+Options -Indexes -MultiViews +FollowSymLinks
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Immer HTTPS und ohne www (nur für die Hauptdomain)
+  RewriteCond %{HTTP_HOST} ^www\.(tsk-thermografie\.de)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Alte WordPress-Adressen
+  RewriteRule ^privacy-policy/?$ /datenschutz/ [R=301,L]
+  RewriteRule ^zertifikate/?$ /ueber-uns/#zertifikate [R=301,NE,L]
+  RewriteRule ^(home|hello-world)/?$ / [R=301,L]
+  RewriteRule ^wp-sitemap.*\.xml$ /sitemap-index.xml [R=301,L]
+  RewriteRule ^(feed|comments/feed)(/.*)?$ / [R=301,L]
+  RewriteRule ^(wp-admin|wp-login\.php|xmlrpc\.php|wp-json)(/.*)?$ / [R=301,L]
+  RewriteCond %{QUERY_STRING} (^|&)(p|page_id|elementor_library)=
+  RewriteRule ^$ /? [R=301,L]
+
+  # Versteckte Dateien und Skripte in Upload-Ordnern sperren
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+  RewriteRule ^wp-content/uploads/.*\.(php\d?|phtml|phar|pl|py|cgi|sh)$ - [F,L,NC]
+  # Alte Office-Vorlagen in den Uploads nicht ausliefern
+  RewriteRule ^wp-content/uploads/.*\.(docx?|xlsx?)$ - [F,L,NC]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Content-Security-Policy "frame-ancestors 'none'"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always unset X-Powered-By
+
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  <FilesMatch "\.(jpe?g|png|gif|webp|svg|woff2?|pdf)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml
+</IfModule>

@@ -1,0 +1,49 @@
+---
+import Basis from '../layouts/Basis.astro';
+import Seitenkopf from '../components/Seitenkopf.astro';
+import AnfrageBand from '../components/AnfrageBand.astro';
+import { FRAGEN } from '../data/fragen';
+import { fragenSchema } from '../lib/schema';
+import { VDS_VERZEICHNIS } from '../lib/firma';
+---
+<Basis
+  titel="Rechtssicherheit bei der Elektrothermografie – Fragen und Antworten"
+  beschreibung="Wer darf Elektrothermografie nach VdS 2860 durchführen, welchen Bericht braucht der Versicherer, wie oft prüfen? Antworten für Betreiber und VEFK."
+  brotkrumen={[]}
+  jsonld={[fragenSchema(FRAGEN)]}
+>
+  <Seitenkopf
+    titel="Rechtssicherheit bei der Elektrothermografie"
+    einleitung="Die Infrarot-Thermografie nach VdS 2860 und DIN 54191 ist die rechtssichere Zustandsanalyse elektrischer Anlagen im laufenden Betrieb – wenn ein paar Regeln eingehalten werden."
+  />
+  <section class="abschnitt">
+    <div class="huelle">
+      <div class="kurz">
+        <h2>Das Wichtigste in drei Sätzen</h2>
+        <p>
+          Lassen Sie die Elektrothermografie nur von einem VdS-anerkannten Sachverständigen mit
+          ET-Anerkennungsnummer durchführen. Bestehen Sie auf einem Untersuchungsbericht nach VdS 2860.
+          Und planen Sie die Prüfungen nach DGUV Vorschrift 3 und Klausel SK 3602 als eigene Termine ein.
+        </p>
+        <p><a href={VDS_VERZEICHNIS} rel="noopener">Verzeichnis der VdS-anerkannten Sachverständigen für Elektrothermografie</a></p>
+      </div>
+      <div class="fragen">
+        {FRAGEN.map((q, i) => (
+          <details open={i === 0}>
+            <summary><h2 class="frage">{q.f}</h2></summary>
+            <div><p>{q.a}</p></div>
+          </details>
+        ))}
+      </div>
+      <p class="weiter">Weitere Fragen? <a href="/kontakt/">Schreiben Sie uns</a> – wir antworten gern.</p>
+    </div>
+  </section>
+  <AnfrageBand />
+</Basis>
+<style>
+  .kurz { max-width: var(--text-breite); padding: var(--s-5); border-left: 4px solid var(--glut); background: var(--grund); margin-bottom: var(--s-7); }
+  .kurz h2 { font-size: 1.35rem; }
+  .kurz p:last-child { margin: 0; }
+  .frage { display: inline; font: inherit; color: inherit; margin: 0; }
+  .weiter { margin-top: var(--s-6); }
+</style>
