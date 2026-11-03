@@ -62,6 +62,6 @@ jobs:
       - name: Erreichbarkeit prüfen
         if: env.WEBSITE_URL != ''
         run: |
-          code=$(curl -s -o /dev/null -w '%{http_code}' "$WEBSITE_URL/")
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$WEBSITE_URL/" || true)
           echo "Startseite: $code"
           test "$code" = 200 || echo "::warning::$WEBSITE_URL antwortet mit $code"
