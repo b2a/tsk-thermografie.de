@@ -9,7 +9,8 @@
     "import:wp": "node scripts/import-wordpress.mjs",
     "bilder:index": "node scripts/bilder-index.mjs",
     "eingaenge": "node scripts/eingaenge-lesen.mjs",
-    "aktualisieren": "bash scripts/aktualisieren.sh"
+    "aktualisieren": "bash scripts/aktualisieren.sh",
+    "vorschau": "astro build && node scripts/vorschau-bilder.mjs && astro preview --port 4321"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

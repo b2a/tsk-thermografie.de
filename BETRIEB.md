@@ -36,8 +36,7 @@ npm run aktualisieren   # holen, prüfen, bauen, veröffentlichen
 Texte der Leistungen liegen als Markdown in `src/content/leistungen/`, Firmendaten zentral in
 `src/lib/firma.ts`, Fragen/Antworten in `src/data/fragen.ts`, Praxisbeispiele in `src/data/beispiele.ts`.
 
-**Bilder in der lokalen Vorschau:** `npm run build && npx astro preview` – vorher einmal
-`mkdir -p dist/wp-content && ln -sfn ../../uploadsRoot dist/wp-content/uploads`.
+**Lokale Vorschau mit Bildern:** `npm run vorschau` (baut, verknüpft `uploadsRoot/` und startet http://localhost:4321).
 
 ## Neues Bild einbauen
 
